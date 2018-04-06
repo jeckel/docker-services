@@ -26,7 +26,6 @@ services:
       traefik.frontend.rule: "Host:traefik.${SERVICES_DOMAIN:-local}"
     ports:
       - "80:80"
-    command: traefik --web -l DEBUG --docker --docker.watch -c /etc/traefik/traefik.toml
     restart: ${RESTART_MODE:-always}
 
   # Portainer: Container manager

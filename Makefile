@@ -36,3 +36,4 @@ clean:
 	@if [ `docker network ls | grep -c -w $(NETWORK_NAME)` -ne 0 ]; then \
 		docker network rm $(NETWORK_NAME); \
 	fi;
+	docker-compose -f wordpress.sample/docker-compose.yml down -v
