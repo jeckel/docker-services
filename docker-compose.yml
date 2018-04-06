@@ -1,13 +1,22 @@
 version: "3"
+
+# Configure default network as the external one
 networks:
   default:
     external:
       name: ${NETWORK_NAME}
+
+# Define a persistent volume for portainer
 volumes:
   portainer_data:
+
+# Declare services
 services:
+  
+  # Traefik: Powerful reverse proxy
   traefik:
     image: traefik:latest
+    container_name: traefik
     volumes:
       - ./traefik/traefik.toml:/etc/traefik/traefik.toml
       - /var/run/docker.sock:/var/run/docker.sock
@@ -17,20 +26,19 @@ services:
       traefik.frontend.rule: "Host:traefik.${SERVICES_DOMAIN:-local}"
     ports:
       - "80:80"
-    container_name: traefik
     command: traefik --web -l DEBUG --docker --docker.watch -c /etc/traefik/traefik.toml
-    restart: ${RESTART_MODE}
+    restart: ${RESTART_MODE:-always}
 
   # Portainer: Container manager
   portainer:
     image: portainer/portainer
+    container_name: portainer
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - portainer_data:/data
     labels:
       traefik.frontend.rule: "Host:portainer.${SERVICES_DOMAIN:-local}"
       traefik.port: "9000"
       traefik.enable: "true"
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-      - portainer_data:/data
-    container_name: portainer
     command: -H unix:///var/run/docker.sock
-    restart: ${RESTART_MODE}
+    restart: ${RESTART_MODE:-always}
