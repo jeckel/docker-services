@@ -1,0 +1,36 @@
+version: "3"
+networks:
+  default:
+    external:
+      name: ${NETWORK_NAME}
+volumes:
+  portainer_data:
+services:
+  traefik:
+    image: traefik:latest
+    volumes:
+      - ./traefik/traefik.toml:/etc/traefik/traefik.toml
+      - /var/run/docker.sock:/var/run/docker.sock
+    labels:
+      traefik.port: "8080"
+      traefik.enable: "true"
+      traefik.frontend.rule: "Host:traefik.${SERVICES_DOMAIN:-local}"
+    ports:
+      - "80:80"
+    container_name: traefik
+    command: traefik --web -l DEBUG --docker --docker.watch -c /etc/traefik/traefik.toml
+    restart: ${RESTART_MODE}
+
+  # Portainer: Container manager
+  portainer:
+    image: portainer/portainer
+    labels:
+      traefik.frontend.rule: "Host:portainer.${SERVICES_DOMAIN:-local}"
+      traefik.port: "9000"
+      traefik.enable: "true"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - portainer_data:/data
+    container_name: portainer
+    command: -H unix:///var/run/docker.sock
+    restart: ${RESTART_MODE}
