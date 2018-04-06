@@ -1,0 +1,37 @@
+version: "3"
+
+# Add the proxy network, but this time it doesn't replace the default one
+networks:
+  proxy:
+    external: 
+      name: ${NETWORK_NAME}
+
+volumes:
+  html:
+services:
+
+  # Wordpress database, only connected to the local/internal network
+  mysql:
+    image: mysql:latest
+    volumes:
+      - /var/lib/mysql
+    environment:
+      - MYSQL_ALLOW_EMPTY_PASSWORD=true
+      - MYSQL_DATABASE=wordpress
+
+  # Wordpress server, connected to both local (to access mysql) and to 
+  # the external (to be accessible by the reverse proxy)
+  wordpress:
+    image: wordpress:latest
+    volumes:
+      - html:/var/www/html
+    depends_on:
+      - mysql
+    labels:
+      traefik.port: "80"
+      traefik.frontend.rule: "Host:wordpress.${SERVICES_DOMAIN:-local}"
+      traefik.enable: "true"
+      traefik.docker.network: "proxy"
+    networks:
+      - default
+      - proxy
