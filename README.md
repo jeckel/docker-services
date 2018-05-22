@@ -22,6 +22,10 @@ See the [Traefik Documentation](https://docs.traefik.io/) on how to configure yo
 
 By default, `portainer` and `traefik` will be accessible throught the `.local` domain like `portainer.local` and `traefik.local`. You can change it with the `SERVICES_DOMAIN` variable in the `.env` file.
 
+## Syncthing
+
+Volume: SYNCTHING_VOLUME_NAME
+
 ## The wordpress sample
 
 To test the wordpress sample, from the project root, launch:

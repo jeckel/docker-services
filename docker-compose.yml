@@ -9,6 +9,10 @@ networks:
 # Define a persistent volume for portainer
 volumes:
   portainer_data:
+  syncthing:
+  syncthing_data:
+    external:
+      name: ${SYNCTHING_VOLUME_NAME}
 
 # Declare services
 services:
@@ -40,4 +44,20 @@ services:
       traefik.port: "9000"
       traefik.enable: "true"
     command: -H unix:///var/run/docker.sock
+    restart: ${RESTART_MODE:-always}
+
+  # Syncthing: Synchronize folder
+  syncthing:
+    image: syncthing/syncthing
+    container_name: syncthing
+    volumes:
+      - syncthing:/var/syncthing
+      - syncthing_data:/var/syncthing_data
+    labels:
+      traefik.frontend.rule: "Host:syncthing.${SERVICES_DOMAIN:-local}"
+      traefik.port: "8384"
+      traefik.enable: "true"
+    ports:
+      - "22000:22000/tcp"
+      - "21027:21027/udp"
     restart: ${RESTART_MODE:-always}
