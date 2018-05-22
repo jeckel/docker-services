@@ -21,6 +21,9 @@ ERROR=$(RED)$(BOLD)  \xE2\x9C\x97$(ITALIC) error$(CLEAN)
 	@if [ `docker network ls | grep -c -w $(NETWORK_NAME)` -eq 0 ]; then \
 		docker network create $(NETWORK_NAME); \
 	fi;
+	@if [ `docker volume ls | grep -c -w ${SYNCTHING_VOLUME_NAME}` -eq 0 ]; then \
+		docker volume create ${SYNCTHING_VOLUME_NAME}; \
+	fi
 
 up: .init
 	@docker-compose up -d
