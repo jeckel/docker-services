@@ -54,7 +54,7 @@ services:
       - syncthing:/var/syncthing
       - syncthing_data:/var/syncthing_data
     labels:
-      traefik.frontend.rule: "Host:syncthing.${SERVICES_DOMAIN:-local}"
+      traefik.frontend.rule: "PathPrefixStrip:/syncthing;Host:localhost"
       traefik.port: "8384"
       traefik.enable: "true"
     ports:
