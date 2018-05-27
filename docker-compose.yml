@@ -23,7 +23,7 @@ services:
     labels:
       traefik.port: "8080"
       traefik.enable: "true"
-      traefik.frontend.rule: "Host:traefik.${SERVICES_DOMAIN:-local}"
+      traefik.frontend.rule: "Host:${SERVICES_DOMAIN:-localhost}"
     ports:
       - "80:80"
     restart: ${RESTART_MODE:-always}
@@ -36,7 +36,7 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
       - portainer_data:/data
     labels:
-      traefik.frontend.rule: "Host:portainer.${SERVICES_DOMAIN:-local}"
+      traefik.frontend.rule: "PathPrefixStrip:/portainer;Host:${SERVICES_DOMAIN:-localhost}"
       traefik.port: "9000"
       traefik.enable: "true"
     command: -H unix:///var/run/docker.sock
