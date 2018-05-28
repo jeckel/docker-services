@@ -62,3 +62,20 @@ services:
       - "22000:22000/tcp"
       - "21027:21027/udp"
     restart: ${RESTART_MODE:-always}
+
+  # Radicale: CalDav and CardDav server
+  radicale:
+    image: tomsquest/docker-radicale
+    container_name: radicale
+    volumes:
+      - ./radicale:/etc/radicale/:ro
+      - syncthing_data:/var/syncthing
+    environment:
+      - UID=1000
+      - GID=1000
+    labels:
+      traefik.frontend.rule: "Host:radicale.${SERVICES_DOMAIN:-localhost}"
+      traefik.port: "5232"
+      traefik.enable: "true"
+    command: radicale --config /etc/radicale/config
+    restart: ${RESTART_MODE:-always}
