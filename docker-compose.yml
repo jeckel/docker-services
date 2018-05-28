@@ -9,7 +9,7 @@ networks:
 # Define a persistent volume for portainer
 volumes:
   portainer_data:
-  syncthing:
+  syncthing_config:
   syncthing_data:
     external:
       name: ${SYNCTHING_VOLUME_NAME}
@@ -51,12 +51,13 @@ services:
     image: syncthing/syncthing
     container_name: syncthing
     volumes:
-      - syncthing:/var/syncthing
-      - syncthing_data:/var/syncthing_data
+      - ./syncthing/:/etc/syncthing/:ro
+      - syncthing_data:/var/syncthing/Sync
     labels:
-      traefik.frontend.rule: "PathPrefixStrip:/syncthing;Host:localhost"
+      traefik.frontend.rule: "PathPrefixStrip:/syncthing;Host:${SERVICES_DOMAIN:-localhost}"
       traefik.port: "8384"
       traefik.enable: "true"
+    entrypoint: "/etc/syncthing/entrypoint.sh"
     ports:
       - "22000:22000/tcp"
       - "21027:21027/udp"
