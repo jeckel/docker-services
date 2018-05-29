@@ -37,3 +37,34 @@ $> docker-compose -f wordpress.sample/docker-compose.yml -d
 Like this, it will use the same `.env` file as the main configuration.
 
 You will then be able to access wordpress at http://wordpress.local
+
+
+# Environment variables
+
+## NETWORK CONFIGURATION
+### Traefik Network Name
+
+Unique global network name that will be used by the reverse proxy.
+All services which needs to be exposed through the Traefik should join this network.
+> `NETWORK_NAME=traefik_proxy`
+
+### Services global host name
+
+Host name shared by the main services
+
+> `SERVICES_DOMAIN=services.local`
+
+### Main domain
+Global hostname extension used for other services.
+
+This mean that a service 'radicale' will be accessible at 'radicale.${MAIN_DOMAIN}'
+
+> `MAIN_DOMAIN=local`
+
+## BACKUP AND SYNCHRONISATION
+
+### Syncthing shared volume Name
+
+This volume is shared to other services which require data to be synchronised / backuped on a remote host
+
+> `SYNCTHING_VOLUME_NAME=syncthing_data`

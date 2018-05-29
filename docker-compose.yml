@@ -12,7 +12,7 @@ volumes:
   syncthing_config:
   syncthing_data:
     external:
-      name: syncthing_data
+      name: ${SYNCTHING_VOLUME_NAME}
 
 # Declare services
 services:
@@ -22,7 +22,7 @@ services:
     image: traefik:latest
     container_name: traefik
     volumes:
-      - ./traefik/traefik.toml:/etc/traefik/traefik.toml
+      - ./conf.d/traefik/traefik.toml:/etc/traefik/traefik.toml:ro
       - /var/run/docker.sock:/var/run/docker.sock
     labels:
       traefik.port: "8080"
@@ -51,7 +51,7 @@ services:
     image: syncthing/syncthing
     container_name: syncthing
     volumes:
-      - ./syncthing/:/etc/syncthing/:ro
+      - ./conf.d/syncthing/:/etc/syncthing/:ro
       - syncthing_data:/var/syncthing/Sync
     labels:
       traefik.frontend.rule: "PathPrefixStrip:/syncthing;Host:${SERVICES_DOMAIN:-localhost}"
@@ -62,20 +62,3 @@ services:
       - "22000:22000/tcp"
       - "21027:21027/udp"
     restart: unless-stopped
-
-  # Radicale: CalDav and CardDav server
-#  radicale:
-#    image: tomsquest/docker-radicale
-#    container_name: radicale
-#    volumes:
-#      - ./radicale:/etc/radicale/:ro
-#      - syncthing_data:/var/syncthing
-#    environment:
-#      - UID=1000
-#      - GID=1000
-#    labels:
-#      traefik.frontend.rule: "Host:radicale.${SERVICES_DOMAIN:-localhost}"
-#      traefik.port: "5232"
-#      traefik.enable: "true"
-#    command: radicale --c /etc/radicale/c
-#    restart: ${RESTART_MODE:-always}

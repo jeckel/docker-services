@@ -10,7 +10,7 @@ networks:
 volumes:
   syncthing_data:
     external:
-      name: syncthing_data
+      name: ${SYNCTHING_VOLUME_NAME}
 
 # Declare services
 services:
@@ -19,7 +19,7 @@ services:
     image: tomsquest/docker-radicale
     container_name: radicale
     volumes:
-      - ./radicale:/etc/radicale/:ro
+      - ./conf.d:/etc/radicale/:ro
       - syncthing_data:/var/syncthing
     environment:
       - UID=1000
