@@ -28,8 +28,12 @@ services:
       traefik.port: "8080"
       traefik.enable: "true"
       traefik.frontend.rule: "Host:${SERVICES_DOMAIN:-localhost}"
+      #### Uncomment this 2 lines to unable https
+      # traefik.frontend.redirect.entryPoint: "https"
+      # traefik.frontend.entryPoints: "http,https"
     ports:
       - "80:80"
+      - "443:443"
     restart: unless-stopped
 
   # Portainer: Container manager
@@ -43,6 +47,9 @@ services:
       traefik.frontend.rule: "PathPrefixStrip:/portainer;Host:${SERVICES_DOMAIN:-localhost}"
       traefik.port: "9000"
       traefik.enable: "true"
+      #### Uncomment this 2 lines to unable https
+      # traefik.frontend.redirect.entryPoint: "https"
+      # traefik.frontend.entryPoints: "http,https"
     command: -H unix:///var/run/docker.sock
     restart: unless-stopped
 
@@ -57,6 +64,9 @@ services:
       traefik.frontend.rule: "PathPrefixStrip:/syncthing;Host:${SERVICES_DOMAIN:-localhost}"
       traefik.port: "8384"
       traefik.enable: "true"
+      #### Uncomment this 2 lines to unable https
+      # traefik.frontend.redirect.entryPoint: "https"
+      # traefik.frontend.entryPoints: "http,https"
     entrypoint: "/etc/syncthing/entrypoint.sh"
     ports:
       - "22000:22000/tcp"

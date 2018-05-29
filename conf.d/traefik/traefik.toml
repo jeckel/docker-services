@@ -15,7 +15,7 @@
 # Default: "ERROR"
 #
 # logLevel = "DEBUG"
-logLevel = "DEBUG"
+logLevel = "ERROR"
 
 # Entrypoints to be used by frontends that do not specify any entrypoint.
 # Each frontend can specify its own entrypoints.
@@ -36,6 +36,9 @@ logLevel = "DEBUG"
 [entryPoints]
     [entryPoints.http]
     address = ":80"
+    [entryPoints.https]
+    address = ":443"
+        [entryPoints.https.tls]
 
 ################################################################
 # Traefik logs configuration
@@ -154,3 +157,10 @@ domain = "local"
 #
 # exposedbydefault = true
 exposedbydefault = false
+
+[acme]
+storage = "acme.json"
+entryPoint = "https"
+onHostRule = true
+    [acme.httpChallenge]
+    entryPoint = "http"
