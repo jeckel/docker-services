@@ -5,6 +5,8 @@ Some usefull services to manage a server running only container, mostly for deve
 
 - [Traefik](https://traefik.io/): A powerful reverse proxy
 - [Portainer](https://portainer.io/): A powerful container management tool
+- [Syncthing](https://syncthing.net/): Cloud synchronisation (used mainly for backuping)
+- [Radicale](https://radicale.org/): A Free and Open-Source CalDAV and CardDAV Server
 
 ## Installation
 
@@ -22,10 +24,6 @@ See the [Traefik Documentation](https://docs.traefik.io/) on how to configure yo
 
 By default, `portainer` and `traefik` will be accessible throught the `.local` domain like `portainer.local` and `traefik.local`. You can change it with the `SERVICES_DOMAIN` variable in the `.env` file.
 
-## Syncthing
-
-Volume: SYNCTHING_VOLUME_NAME
-
 ## The wordpress sample
 
 To test the wordpress sample, from the project root, launch:
@@ -40,6 +38,8 @@ You will then be able to access wordpress at http://wordpress.local
 
 
 # Environment variables
+
+List of environment variable defined in the .env file
 
 ## NETWORK CONFIGURATION
 ### Traefik Network Name
