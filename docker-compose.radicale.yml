@@ -1,0 +1,32 @@
+version: "3"
+
+# Configure default network as the external one
+networks:
+  default:
+    external:
+      name: ${NETWORK_NAME}
+
+# Define volumes
+volumes:
+  syncthing_data:
+    external:
+      name: syncthing_data
+
+# Declare services
+services:
+  # Radicale: CalDav and CardDav server
+  radicale:
+    image: tomsquest/docker-radicale
+    container_name: radicale
+    volumes:
+      - ./radicale:/etc/radicale/:ro
+      - syncthing_data:/var/syncthing
+    environment:
+      - UID=1000
+      - GID=1000
+    labels:
+      traefik.frontend.rule: "Host:radicale.${MAIN_DOMAIN:-localhost}"
+      traefik.port: "5232"
+      traefik.enable: "true"
+    command: radicale --config /etc/radicale/config
+    restart: unless-stopped
