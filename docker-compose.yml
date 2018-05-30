@@ -24,6 +24,7 @@ services:
     volumes:
       - ./conf.d/traefik/traefik.toml:/etc/traefik/traefik.toml:ro
       - /var/run/docker.sock:/var/run/docker.sock
+      - syncthing_data:/var/syncthing/Sync
     labels:
       traefik.port: "8080"
       traefik.enable: "true"

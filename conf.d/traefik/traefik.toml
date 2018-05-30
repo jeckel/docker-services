@@ -159,7 +159,7 @@ domain = "local"
 exposedbydefault = false
 
 [acme]
-storage = "acme.json"
+storage = "/var/syncthing/Sync/traefik/acme.json"
 entryPoint = "https"
 onHostRule = true
     [acme.httpChallenge]
