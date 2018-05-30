@@ -21,6 +21,6 @@ fi
 if [ `docker volume ls | grep -c -w ${SYNCTHING_VOLUME_NAME}` -eq 0 ]; then
     docker volume create ${SYNCTHING_VOLUME_NAME}
     # Fix volume owner
-    docker run --rm -v ${SYNCTHING_VOLUME_NAME}:/syncthing alpine chown 1000:1000 /syncthing
-    docker run --rm -v ${SYNCTHING_VOLUME_NAME}:/syncthing alpine sh -c "mkdir -p /syncthing/traefik/ && touch /syncthing/traefik/acme.json && chmod 600 /syncthing/traefik/acme.json"
 fi
+docker run --rm -v ${SYNCTHING_VOLUME_NAME}:/syncthing alpine chown 1000:1000 /syncthing
+docker run --rm -v ${SYNCTHING_VOLUME_NAME}:/syncthing alpine sh -c "mkdir -p /syncthing/traefik/ && touch /syncthing/traefik/acme.json && chmod 600 /syncthing/traefik/acme.json"

@@ -162,5 +162,5 @@ exposedbydefault = false
 storage = "/var/syncthing/Sync/traefik/acme.json"
 entryPoint = "https"
 onHostRule = true
-    [acme.httpChallenge]
-    entryPoint = "http"
+[acme.httpChallenge]
+entryPoint = "http"
