@@ -28,8 +28,8 @@ services:
       traefik.frontend.rule: "Host:radicale.${MAIN_DOMAIN:-localhost}"
       traefik.port: "5232"
       traefik.enable: "true"
-      #### Uncomment this 2 lines to unable https
-      # traefik.frontend.redirect.entryPoint: "https"
-      # traefik.frontend.entryPoints: "http,https"
+      #### Comment this 2 lines to disable https
+      traefik.frontend.redirect.entryPoint: "https"
+      traefik.frontend.entryPoints: "http,https"
     command: radicale --config /etc/radicale/config
     restart: unless-stopped
